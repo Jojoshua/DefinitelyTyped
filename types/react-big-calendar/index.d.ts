@@ -7,6 +7,9 @@
 //                 Paul Potsides <https://github.com/strongpauly>
 //                 janb87 <https://github.com/janb87>
 //                 Daniel Thorne <https://github.com/ldthorne>
+//                 Panagiotis Rikarnto Siavelis <https://github.com/siavelis>
+//                 Tomas Hubelbauer <https://github.com/TomasHubelbauer>
+//                 Lucas Silva Souza <https://github.com/lksilva>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.8
 import { Validator } from 'prop-types';
@@ -19,9 +22,11 @@ export type stringOrDate = string | Date;
 export type ViewKey = 'MONTH' | 'WEEK' | 'WORK_WEEK' | 'DAY' | 'AGENDA';
 export type View = 'month' | 'week' | 'work_week' | 'day' | 'agenda';
 export type Views = View[] | {
+    day: boolean | React.SFC | React.Component,
+    agenda: boolean | React.SFC | React.Component,
     month: boolean | React.SFC | React.Component,
     week: boolean | React.SFC | React.Component,
-    myweek: boolean | React.SFC | React.Component,
+    work_week: boolean | React.SFC | React.Component
 };
 export type Navigate = 'PREV' | 'NEXT' | 'TODAY' | 'DATE';
 
@@ -113,6 +118,12 @@ export interface HeaderProps {
     localizer: DateLocalizer;
 }
 
+export interface ResourceHeaderProps {
+    label: React.ReactNode;
+    index: number;
+    resource: object;
+}
+
 export interface Components<TEvent extends Event = Event> {
     event?: React.ComponentType<EventProps<TEvent>>;
     eventWrapper?: React.ComponentType<EventWrapperProps<TEvent>>;
@@ -145,6 +156,7 @@ export interface Components<TEvent extends Event = Event> {
      * component used as a header for each column in the TimeGridHeader
      */
     header?: React.ComponentType<HeaderProps>;
+    resourceHeader?: React.ComponentType<ResourceHeaderProps>;
 }
 
 export interface ToolbarProps {
@@ -204,6 +216,7 @@ export interface Messages {
     today?: string;
     agenda?: string;
     showMore?: (count: number) => string;
+    noEventsInRange?: string;
 }
 
 export type Culture = string | string[];
@@ -240,7 +253,7 @@ export interface BigCalendarProps<TEvent extends Event = Event, TResource extend
     onDoubleClickEvent?: (event: TEvent, e: React.SyntheticEvent<HTMLElement>) => void;
     onSelectEvent?: (event: TEvent, e: React.SyntheticEvent<HTMLElement>) => void;
     onSelecting?: (range: { start: stringOrDate, end: stringOrDate }) => boolean | undefined | null;
-    onRangeChange?: (range: { start: stringOrDate, end: stringOrDate }) => void;
+    onRangeChange?: (range: Array<Date | { start: stringOrDate, end: stringOrDate }>) => void;
     selected?: any;
     views?: Views;
     drilldownView?: View | null;

@@ -3,7 +3,7 @@
 // Definitions by: Alexey Svetliakov <https://github.com/asvetliakov>
 //                 snerks <https://github.com/snerks>
 //                 Krzysztof Cebula <https://github.com/Havret>
-//                 Vitaliy Polyanskiy <https://github.com/allreadyExisted>
+//                 Vitaliy Polyanskiy <https://github.com/alreadyExisted>
 //                 James Lismore <https://github.com/jlismore>
 //                 Stack Builders <https://github.com/stackbuilders>
 //                 Esteban Ibarra <https://github.com/ibarrae>
@@ -2003,7 +2003,7 @@ declare module "victory" {
      * gutters are between columns. When orientation is vertical, gutters
      * are the space between rows.
      */
-    gutter?: number;
+    gutter?: number | {left: number, right: number};
     /**
      * The itemsPerRow prop determines how many items to render in each row
      * of a horizontal legend, or in each column of a vertical legend. This

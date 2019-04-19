@@ -973,6 +973,7 @@ stripe.invoices.retrieveUpcoming("cus_5rfJKDJkuxzh5Q").then((upcoming) => {
 stripe.invoices.update(
     "in_15fvyXEe31JkLCeQH7QbgZZb",
     {
+        auto_advance: false,
         closed: true
     },
     (err, invoice) => {
@@ -982,6 +983,7 @@ stripe.invoices.update(
 stripe.invoices.update(
     "in_15fvyXEe31JkLCeQH7QbgZZb",
     {
+        auto_advance: false,
         closed: true
     }).then((invoice) => {
         // asynchronously called
@@ -1381,8 +1383,8 @@ stripe.ephemeralKeys.create({ customer: "cus_5rfJKDJkuxzh5Q" }, { stripe_version
 stripe.usageRecords.create('sub_8QwCiwZ9tmMSpt', { action: 'set', quantity: 10000, timestamp: 1537006853 }).then((usageRecord: Stripe.usageRecords.IUsageRecord) => {});
 stripe.usageRecords.create('sub_8QwCiwZ9tmMSpt', { action: 'set', quantity: 10000, timestamp: 1537006853 }, (err, usageRecord: Stripe.usageRecords.IUsageRecord) => {});
 
-stripe.usageRecordSummaries.list({ subscription_item: 'si_C9gimdd2l9qvCU', limit: 10 }).then((usageRecordSummaries: Stripe.usageRecordSummaries.IUsageRecordSummaries) => {});
-stripe.usageRecordSummaries.list({ subscription_item: 'si_C9gimdd2l9qvCU', limit: 10 }, (err, usageRecordSummaries: Stripe.usageRecordSummaries.IUsageRecordSummaries) => {});
+stripe.usageRecordSummaries.list('si_C9gimdd2l9qvCU', { limit: 10 }).then((usageRecordSummaries: Stripe.usageRecordSummaries.IUsageRecordSummaries) => {});
+stripe.usageRecordSummaries.list('si_C9gimdd2l9qvCU', { limit: 10 }, (err, usageRecordSummaries: Stripe.usageRecordSummaries.IUsageRecordSummaries) => {});
 
 //#region Errors
 // ##################################################################################
