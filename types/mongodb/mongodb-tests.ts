@@ -33,7 +33,8 @@ const options: mongodb.MongoClientOptions = {
     promoteBuffers: false,
     useNewUrlParser: false,
     authMechanism: 'SCRAM-SHA-1',
-    forceServerObjectId: false
+    forceServerObjectId: false,
+    promiseLibrary: Promise,
 };
 
 mongodb.MongoClient.connect(connectionString, options, (err: mongodb.MongoError, client: mongodb.MongoClient) => {
@@ -105,8 +106,8 @@ mongodb.MongoClient.connect(connectionString, options, (err: mongodb.MongoError,
         cursor = cursor.hint('age_1');
         cursor = cursor.limit(1);
         cursor = cursor.map((result) => {});
-        cursor = cursor.max(1);
-        cursor = cursor.min(1);
+        cursor = cursor.max({ age: 130 });
+        cursor = cursor.min({ age: 18 });
         cursor = cursor.maxAwaitTimeMS(1);
         cursor = cursor.maxScan({});
         cursor = cursor.maxTimeMS(1);
@@ -162,6 +163,34 @@ mongodb.MongoClient.connect(connectionString, options, (err: mongodb.MongoError,
                 cursor.match({ bar: 1 }).limit(10);
             }
         );
+
+        interface Employee {
+            firstName: string;
+            lastName: string;
+            department: string;
+        }
+
+        interface EmployeeName {
+            fullName: string;
+        }
+
+        const cursor1: mongodb.AggregationCursor<EmployeeName> = (
+          collection.aggregate<Employee>().project<EmployeeName>({
+            fullName: { $concat: ['$firstName', ' ', '$lastName'] },
+          })
+        );
+
+        interface DepartmentSummary {
+            _id: string;
+            count: number;
+        }
+
+        const cursor2: mongodb.AggregationCursor<DepartmentSummary> = (
+          collection.aggregate<Employee>().group<DepartmentSummary>({
+            _id: '$department',
+            count: { $sum: 1 },
+          })
+        );
     }
 
     // test for new typings
@@ -172,11 +201,11 @@ mongodb.MongoClient.connect(connectionString, options, (err: mongodb.MongoError,
             fruitTags: string[];
         }
         const testCollection = db.collection<TestCollection>('testCollection');
-		testCollection.insertOne({
+        testCollection.insertOne({
             stringField: 'hola',
             fruitTags: ['Strawberry'],
         });
-		testCollection.insertMany([
+        testCollection.insertMany([
             { stringField: 'hola', fruitTags: ['Apple', 'Lemon'] },
             { stringField: 'hola', numberField: 1, fruitTags: [] },
         ]);
@@ -343,3 +372,7 @@ mongodb.connect(connectionString).then((client) => {
         testCollectionReduceFunction
     );
 });
+
+// Test other error classes
+new mongodb.MongoNetworkError('network error');
+new mongodb.MongoParseError('parse error');

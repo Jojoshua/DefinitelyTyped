@@ -872,6 +872,28 @@ describe("jasmine.objectContaining", () => {
         }));
     });
 
+    it("can be used in a nested object", () => {
+        interface nestedFooType {
+            nested: {
+                a: number;
+                b: number;
+                bar: string;
+            };
+        }
+
+        const nestedFoo: nestedFooType = {
+            nested: {
+                a: 1,
+                b: 2,
+                bar: 's',
+            },
+        };
+
+        expect(nestedFoo).toEqual({
+            nested: jasmine.objectContaining({b: 2})
+        });
+    });
+
     describe("when used with a spy", () => {
         it("is useful for comparing arguments", () => {
             const callback = jasmine.createSpy('callback');
@@ -1194,6 +1216,16 @@ describe('better typed spys', () => {
              // $ExpectType string
             spy.calls.first().returnValue;
         });
+        it('works on constructors', () => {
+            class MyClass {
+                constructor(readonly foo: string) {}
+            }
+            const namespace = { MyClass };
+            const spy = spyOn(namespace, 'MyClass');
+            spy.and.returnValue({foo: 'test'});
+            spy.and.returnValue({}); // $ExpectError
+            spy.and.returnValue({foo: 123}); // $ExpectError
+        });
         it('can allows overriding the generic', () => {
             class Base {
                 service() {}
@@ -1217,6 +1249,16 @@ describe('better typed spys', () => {
 
             // $ExpectType (val: string) => Spy<() => string>
             spyObj.method.and.returnValue;
+        });
+
+        it('has a way to opt out of inferred function types', () => {
+            interface I {
+                f(): string;
+                f(x: any): number;
+              }
+
+            const spyObject = jasmine.createSpyObj<jasmine.AnyMethods<I>>("spyObject", ["f"]);
+            spyObject.f.and.returnValue("a string - working");
         });
     });
 });
