@@ -1122,3 +1122,34 @@ table = new Tabulator('#test', {
         return new Blob([fileContents], { type: mimeType }); // must return a blob to proceed with the download, return false to abort download
     },
 });
+
+// 5.4
+
+table = new Tabulator('#test', {
+    headerSortClickElement: 'icon',
+    groupDblClickPopup: 'Im a Popup',
+    rowDblClickPopup: 'Im a Popup',
+    rowDblClickMenu: [
+        {
+            label: 'Delete Row',
+            action: (e, row) => {
+                row.delete();
+            },
+        },
+    ],
+    columns: [
+        {
+            field: 'test_editor',
+            title: 'Time Editor',
+            editor: 'time',
+            dblClickPopup: 'Im a Popup',
+            headerDblClickPopup: 'Im a Popup',
+            headerWordWrap: true,
+            headerMouseUp: (e, column) => {},
+        },
+    ],
+});
+
+table.on('cellMouseDown', (e, cell) => {});
+
+column.popup('test', 'bottom');
