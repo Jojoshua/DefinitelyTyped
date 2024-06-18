@@ -1,8 +1,7 @@
 // cspell: ignore XLXS, alphanum, datetime, datetimediff, rownum, freetext, recalc, Monkhouse
 
 export interface Options
-    extends
-        OptionsGeneral,
+    extends OptionsGeneral,
         OptionsMenu,
         OptionsHistory,
         OptionsLocale,
@@ -19,8 +18,7 @@ export interface Options
         OptionsDataTree,
         OptionsDebug,
         OptionsHTML,
-        OptionsSpreadsheet
-{}
+        OptionsSpreadsheet {}
 
 export interface OptionsDebug {
     invalidOptionWarning?: boolean;
@@ -270,12 +268,12 @@ export interface OptionsPagination {
         | "rows"
         | "pages"
         | ((
-            pageSize: number,
-            currentRow: number,
-            currentPage: number,
-            totalRows: number,
-            totalPages: number,
-        ) => string | HTMLElement);
+              pageSize: number,
+              currentRow: number,
+              currentPage: number,
+              totalRows: number,
+              totalPages: number
+          ) => string | HTMLElement);
 
     /**
      * By default the counter will be displayed in the left of the table footer. If you would like it displayed in another element pass a DOM node or a CSS selector for that element.
@@ -289,11 +287,7 @@ export interface OptionsPagination {
     paginationInitialPage?: number | undefined;
 }
 
-export type GroupArg =
-    | string
-    | string[]
-    | ((data: any) => any)
-    | Array<string | ((data: any) => any)>;
+export type GroupArg = string | string[] | ((data: any) => any) | Array<string | ((data: any) => any)>;
 
 export interface OptionsRowGrouping {
     /** String/function to select field to group rows by */
@@ -916,20 +910,23 @@ export interface OptionsGeneral {
      *
      * This can be great for adding row number, movable row handles or row selections, and keeps the controls visually separated from the table data.
      */
-    rowHeader?: boolean | {
-        formatter?: string;
-        field?: string;
-        headerSort?: boolean;
-        hozAlign?: ColumnDefinitionAlign;
-        headerHozAlign?: ColumnDefinitionAlign;
-        resizable?: boolean;
-        frozen?: boolean;
-        titleFormatter?: string;
-        cellClick?: (e: MouseEvent, cell: CellComponent) => void;
-        minWidth?: number;
-        width?: number;
-        rowHandle?: boolean;
-    } | undefined;
+    rowHeader?:
+        | boolean
+        | {
+              formatter?: string;
+              field?: string;
+              headerSort?: boolean;
+              hozAlign?: ColumnDefinitionAlign;
+              headerHozAlign?: ColumnDefinitionAlign;
+              resizable?: boolean;
+              frozen?: boolean;
+              titleFormatter?: string;
+              cellClick?: (e: MouseEvent, cell: CellComponent) => void;
+              minWidth?: number;
+              width?: number;
+              rowHandle?: boolean;
+          }
+        | undefined;
 
     /**
      * The value to set in the cell after the user has finished editing the cell.
@@ -1239,14 +1236,14 @@ export interface ColumnDefinition extends ColumnLayout, CellCallbacks {
         | "datetime"
         | "array"
         | ((
-            a: any,
-            b: any,
-            aRow: RowComponent,
-            bRow: RowComponent,
-            column: ColumnComponent,
-            dir: SortDirection,
-            sorterParams: {},
-        ) => number)
+              a: any,
+              b: any,
+              aRow: RowComponent,
+              bRow: RowComponent,
+              column: ColumnComponent,
+              dir: SortDirection,
+              sorterParams: {}
+          ) => number)
         | undefined;
 
     /** If you want to dynamically generate the sorterParams at the time the sort is called you can pass a function into the property that should return the params object. */
@@ -1591,7 +1588,7 @@ export type CustomMutator = (
     data: any,
     type: "data" | "edit",
     mutatorParams: any,
-    cell?: CellComponent,
+    cell?: CellComponent
 ) => any;
 
 export type CustomMutatorParams = {} | ((value: any, data: any, type: "data" | "edit", cell?: CellComponent) => any);
@@ -1602,18 +1599,18 @@ export type CustomAccessor = (
     type: "data" | "download" | "clipboard",
     AccessorParams: any,
     column?: ColumnComponent,
-    row?: RowComponent,
+    row?: RowComponent
 ) => any;
 
 export type CustomAccessorParams =
     | {}
     | ((
-        value: any,
-        data: any,
-        type: "data" | "download" | "clipboard",
-        column?: ColumnComponent,
-        row?: RowComponent,
-    ) => any);
+          value: any,
+          data: any,
+          type: "data" | "download" | "clipboard",
+          column?: ColumnComponent,
+          row?: RowComponent
+      ) => any);
 
 export type ColumnCalc =
     | "avg"
@@ -1648,6 +1645,7 @@ export type Formatter =
     | "handle"
     | "rowSelection"
     | "responsiveCollapse"
+    | "toggle"
     | ((cell: CellComponent, formatterParams: {}, onRendered: EmptyCallback) => string | HTMLElement);
 
 export type FormatterParams =
@@ -1662,6 +1660,7 @@ export type FormatterParams =
     | StarRatingParams
     | RowSelectionParams
     | JSONRecord
+    | ToggleParams
     | ((cell: CellComponent) => {});
 
 export type Editor =
@@ -1677,12 +1676,12 @@ export type Editor =
     | "time"
     | "datetime"
     | ((
-        cell: CellComponent,
-        onRendered: EmptyCallback,
-        success: ValueBooleanCallback,
-        cancel: ValueVoidCallback,
-        editorParams: {},
-    ) => HTMLElement | false);
+          cell: CellComponent,
+          onRendered: EmptyCallback,
+          success: ValueBooleanCallback,
+          cancel: ValueVoidCallback,
+          editorParams: {}
+      ) => HTMLElement | false);
 
 export type EditorParams =
     | NumberParams
@@ -1778,6 +1777,17 @@ export interface StarRatingParams {
 
 export interface RowSelectionParams {
     rowRange?: RowRangeLookup | undefined;
+}
+
+export interface ToggleParams {
+    size?: number;
+    max?: number;
+    onValue?: boolean | string;
+    offValue?: boolean | string;
+    onTruthy?: boolean;
+    onColor?: string;
+    offColor?: string;
+    clickable?: boolean;
 }
 
 export interface SharedEditorParams {
@@ -2556,7 +2566,7 @@ export interface EventCallBackMethods {
         data: any[],
         rows: RowComponent[],
         selectedRows: RowComponent[],
-        deselectedRows: RowComponent[],
+        deselectedRows: RowComponent[]
     ) => void;
     rowSelected: (row: RowComponent) => void;
     rowDeselected: (row: RowComponent) => void;
@@ -2763,7 +2773,7 @@ declare class Tabulator {
     /** Lookup table objects for any existing table using the element they were created on. */
     static findTable: (query: string) => Tabulator[];
     static registerModule: (
-        modules: { new(tabulator: Tabulator): Module } | Array<{ new(tabulator: Tabulator): Module }>,
+        modules: { new (tabulator: Tabulator): Module } | Array<{ new (tabulator: Tabulator): Module }>
     ) => void;
     static bindModules: ([]) => void;
     constructor(selector: string | HTMLElement, options?: Options);
@@ -2794,7 +2804,7 @@ declare class Tabulator {
             | ((columns: ColumnDefinition[], data: any, options: any, setFileContents: any) => any),
         fileName: string,
         params?: DownloadOptions,
-        filter?: RowRangeLookup,
+        filter?: RowRangeLookup
     ) => void;
 
     /** If you want to open the generated file in a new browser tab rather than downloading it straight away, you can use the downloadToTab function. This is particularly useful with the PDF downloader, as it allows you to preview the resulting PDF in a new browser ta */
@@ -3012,7 +3022,7 @@ declare class Tabulator {
     addColumn: (
         definition: ColumnDefinition,
         insertRightOfTarget?: boolean,
-        positionTarget?: ColumnLookup,
+        positionTarget?: ColumnLookup
     ) => Promise<void>;
 
     /** To permanently remove a column from the table deleteColumn function. This function takes any of the standard column component look up options as its first parameter. */
@@ -3077,7 +3087,7 @@ declare class Tabulator {
         p1: string | Filter[] | any[] | ((data: any, filterParams: any) => boolean),
         p2?: FilterType | {},
         value?: any,
-        filterParams?: FilterParams,
+        filterParams?: FilterParams
     ) => void;
 
     /** If you want to add another filter to the existing filters then you can call the addFilter function: */
@@ -3182,14 +3192,14 @@ declare class Tabulator {
             | boolean
             | boolean[]
             | ((value: any, count: number, data: any, group: GroupComponent) => boolean)
-            | Array<boolean | ((value: any, count: number, data: any, group: GroupComponent) => boolean)>,
+            | Array<boolean | ((value: any, count: number, data: any, group: GroupComponent) => boolean)>
     ) => void;
 
     /** You can use the setGroupHeader function to change the header generation function for each group. This function has one argument and takes the same values as passed to the groupHeader setup option. */
     setGroupHeader: (
         values:
             | ((value: any, count: number, data: any, group: GroupComponent) => string)
-            | Array<(value: any, count: number, data: any) => string>,
+            | Array<(value: any, count: number, data: any) => string>
     ) => void;
 
     /** You can use the getGroups function to retrieve an array of all the first level Group Components in the table. */
